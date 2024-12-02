@@ -3,6 +3,7 @@ import { Primitive } from "./Primitive";
 import seedrandom from "seedrandom";
 import { Rectangle } from "./Rectangle";
 import { PrimitiveType } from "./PrimitiveType";
+import { Triangle } from "./Triangle";
 
 function createPrimitive(primitiveType: PrimitiveType, p: vec2, s: vec2, c: vec4) : Primitive {
     switch (primitiveType) {
@@ -11,7 +12,7 @@ function createPrimitive(primitiveType: PrimitiveType, p: vec2, s: vec2, c: vec4
         case PrimitiveType.Rectangle:
             return new Rectangle(p, s, c);
         case PrimitiveType.Triangle:
-            break;
+            return new Triangle(p, s, c);
         case PrimitiveType.Hexagon:
             break;
         default:
@@ -33,7 +34,7 @@ function createPrimitive(primitiveType: PrimitiveType, p: vec2, s: vec2, c: vec4
  */
 export function generatePrimitives(numInstances: number) : Primitive[] {
     const rng = seedrandom('my-seed');
-    const density = numInstances / 10;
+    const density = Math.log(numInstances);
     let primitives: Primitive[] = [];
     for (let i = 0; i < numInstances; i++) {
         const randomColor = new vec4(rng(), rng(), rng(), 1.0);

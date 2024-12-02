@@ -1,10 +1,10 @@
 import { Primitive } from "../../Components/Primitive";
 import { PrimitiveType } from "../../Components/PrimitiveType";
 import { Scene } from "../../Components/Scene";
-import { vec4 } from "../../utils/math";
 import { BasicShader } from "../Shaders/BasicShader";
 import { BasicPrimitiveRenderer } from "./BasicPrimitivesRenderers/BasicPrimitiveRenderer";
 import { BasicRectangleRenderer } from "./BasicPrimitivesRenderers/BasicRectangleRenderer";
+import { BasicTriangleRenderer } from "./BasicPrimitivesRenderers/BasicTriangleRenderer";
 
 export class BasicSceneRenderer {
     scene: Scene;
@@ -57,22 +57,17 @@ export class BasicSceneRenderer {
         }
 
         switch (primitive.type) {
-            case PrimitiveType.Circle:
-                break;
             case PrimitiveType.Rectangle:
                 this.lastBoundRenderer = BasicRectangleRenderer.Instance;
                 break;
             case PrimitiveType.Triangle:
-                break;
-            case PrimitiveType.Hexagon:
+                this.lastBoundRenderer = BasicTriangleRenderer.Instance;
                 break;
             default:
+                this.lastBoundRenderer = BasicRectangleRenderer.Instance;
                 break;
         }
         
-        //temp, until all variants are implemented
-        this.lastBoundRenderer = BasicRectangleRenderer.Instance;
-
         this.lastBoundRenderer.bind(this.gl);
         return this.lastBoundRenderer;
     }
@@ -82,5 +77,7 @@ export class BasicSceneRenderer {
         BasicRectangleRenderer.Instance.setUniformsLocations(this.shader.transULoc, this.shader.scaleULoc, this.shader.colorULoc);
         BasicRectangleRenderer.Instance.initializeBuffers(this.gl, this.shader.positionAttributeLocation);
 
+        BasicTriangleRenderer.Instance.setUniformsLocations(this.shader.transULoc, this.shader.scaleULoc, this.shader.colorULoc);
+        BasicTriangleRenderer.Instance.initializeBuffers(this.gl, this.shader.positionAttributeLocation);
     }
 }
