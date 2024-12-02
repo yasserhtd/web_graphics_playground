@@ -1,27 +1,51 @@
 import { vec2 } from "../utils/math";
+import { Camera } from "./Camera";
 import { Primitive } from "./Primitive";
 
 export class Dragger {
 
-    primitives: Primitive[];
+    private primitives: Primitive[];
     protected dragIdx: number|null = null;
     private prevMousePos: vec2|null = null;
-    
-    constructor(primitives: Primitive[]) {
+    private sceneChangedCallback: (changedIdx: number)=>void = () => {};
+    private camera: Camera;
+    private canvas: HTMLCanvasElement;
+
+    constructor(primitives: Primitive[], canvas: HTMLCanvasElement, camera: Camera) {
         this.primitives = primitives;
+        canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+        canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
+        canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
+        this.camera = camera;
+        this.canvas = canvas;
     }
 
-    onMouseMove(posWorldSpace: vec2) : boolean {
+    setSceneChangedCallback(callback: (changedIdx: number)=>void) {
+        this.sceneChangedCallback = callback;
+    }
+
+    private calcPosWorldSpace(event: MouseEvent) {
+        const rect = this.canvas.getBoundingClientRect();
+        const x = (2.0 * (event.clientX - rect.left) / this.canvas.clientWidth) - 1.0;
+        const y = -((2.0 * (event.clientY - rect.top) / this.canvas.clientHeight) - 1.0);
+        let pos = new vec2(x, y);
+        pos = this.camera.screenToWorldSpace(pos);
+        return pos;
+      }
+      
+    
+    private onMouseMove(event: MouseEvent) : void {
         if (this.dragIdx !== null && this.prevMousePos) {
+            const posWorldSpace = this.calcPosWorldSpace(event);
             const delta = posWorldSpace.minus(this.prevMousePos);
             this.primitives[this.dragIdx].translate(delta);
             this.prevMousePos = posWorldSpace;
-            return true;
+            this.sceneChangedCallback(this.dragIdx); //assume only pos can be changed for now
         }
-        return false;
     }
 
-    onMouseDown(posWorldSpace: vec2) : boolean{
+    private onMouseDown(event: MouseEvent) : boolean{
+        const posWorldSpace = this.calcPosWorldSpace(event);
         //O(n) what a shame!
         for (let i = this.primitives.length - 1; i >= 0; i--) {
             const primitive = this.primitives[i];
@@ -36,7 +60,7 @@ export class Dragger {
         return false;
     }
 
-    onMouseUp() {
+    private onMouseUp() {
         this.dragIdx = null;
         this.prevMousePos = null;
     }

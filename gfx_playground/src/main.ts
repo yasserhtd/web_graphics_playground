@@ -1,6 +1,6 @@
 import './style.css'
 import { setupCounter } from './counter.ts'
-import { setupCanvas } from './canvas.ts'
+import { buildScene } from './Components/SceneBuilder.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <div class="card">
@@ -15,5 +15,4 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
 setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
 
-// Call setupCanvas after the HTML has been updated
-setupCanvas(document.querySelector<HTMLCanvasElement>('#canvas')!, document.querySelector<HTMLInputElement>('#backend')!)
+buildScene(document.querySelector<HTMLCanvasElement>('#canvas')!, document.querySelector<HTMLInputElement>('#backend')!)
