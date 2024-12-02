@@ -1,16 +1,19 @@
 import { Primitive } from "../../Components/Primitive";
 import { PrimitiveType } from "../../Components/PrimitiveType";
 import { Scene } from "../../Components/Scene";
+import { tringulateCircle } from "../../utils/Triangulator";
 import { BasicShader } from "../Shaders/BasicShader";
 import { BasicPrimitiveRenderer } from "./BasicPrimitivesRenderers/BasicPrimitiveRenderer";
 import { BasicRectangleRenderer } from "./BasicPrimitivesRenderers/BasicRectangleRenderer";
 import { BasicTriangleRenderer } from "./BasicPrimitivesRenderers/BasicTriangleRenderer";
+import { GeometryRenderer } from "./BasicPrimitivesRenderers/GeometryRenderer";
 
 export class BasicSceneRenderer {
     scene: Scene;
     gl: WebGL2RenderingContext;
     shader: BasicShader;
     private lastBoundRenderer: BasicPrimitiveRenderer | null = null;
+    private circleRenderer: GeometryRenderer = new GeometryRenderer(PrimitiveType.Circle);
 
     constructor(gl: WebGL2RenderingContext, scene: Scene) {
         this.gl = gl;
@@ -63,6 +66,9 @@ export class BasicSceneRenderer {
             case PrimitiveType.Triangle:
                 this.lastBoundRenderer = BasicTriangleRenderer.Instance;
                 break;
+            case PrimitiveType.Circle:
+                this.lastBoundRenderer = this.circleRenderer;
+                break;
             default:
                 this.lastBoundRenderer = BasicRectangleRenderer.Instance;
                 break;
@@ -79,5 +85,10 @@ export class BasicSceneRenderer {
 
         BasicTriangleRenderer.Instance.setUniformsLocations(this.shader.transULoc, this.shader.scaleULoc, this.shader.colorULoc);
         BasicTriangleRenderer.Instance.initializeBuffers(this.gl, this.shader.positionAttributeLocation);
+
+        const circle = tringulateCircle(10);
+        this.circleRenderer.setUniformsLocations(this.shader.transULoc, this.shader.scaleULoc, this.shader.colorULoc);
+        this.circleRenderer.initializeBuffers(this.gl, this.shader.positionAttributeLocation, circle[0], circle[1]);
+        
     }
 }

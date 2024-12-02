@@ -3,8 +3,10 @@ import { BasicPrimitiveRenderer } from "./BasicPrimitiveRenderer";
 
 export class BasicRectangleRenderer extends BasicPrimitiveRenderer {
 
-    type: PrimitiveType = PrimitiveType.Rectangle;
-    
+    constructor() {
+        super(PrimitiveType.Rectangle);
+    }
+
     initializeBuffers(gl: WebGL2RenderingContext, positionAttributeLocation: number): void {
             this.vao = gl.createVertexArray();
             gl.bindVertexArray(this.vao);

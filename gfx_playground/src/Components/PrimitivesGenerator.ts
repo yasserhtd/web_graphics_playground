@@ -4,11 +4,12 @@ import seedrandom from "seedrandom";
 import { Rectangle } from "./Rectangle";
 import { PrimitiveType } from "./PrimitiveType";
 import { Triangle } from "./Triangle";
+import { Circle } from "./Circle";
 
 function createPrimitive(primitiveType: PrimitiveType, p: vec2, s: vec2, c: vec4) : Primitive {
     switch (primitiveType) {
         case PrimitiveType.Circle:
-            break;
+            return new Circle(p, s, c);
         case PrimitiveType.Rectangle:
             return new Rectangle(p, s, c);
         case PrimitiveType.Triangle:

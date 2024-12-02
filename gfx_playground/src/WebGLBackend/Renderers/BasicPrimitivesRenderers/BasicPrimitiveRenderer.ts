@@ -3,7 +3,7 @@ import { vec2, vec4 } from "../../../utils/math";
 
 export abstract class BasicPrimitiveRenderer {
 
-    type: PrimitiveType = PrimitiveType.END;
+    type: PrimitiveType;
     vao: WebGLVertexArrayObject | null = null;
     positionBuffer: WebGLBuffer | null = null;
     indexBuffer: WebGLBuffer | null = null;
@@ -11,6 +11,10 @@ export abstract class BasicPrimitiveRenderer {
     transULoc: WebGLUniformLocation|null = null;
     scaleULoc: WebGLUniformLocation|null = null;
     colorULoc: WebGLUniformLocation|null = null;
+
+    constructor(type: PrimitiveType) {
+        this.type = type;
+    }
 
     bind(gl: WebGL2RenderingContext) {
         gl.bindVertexArray(this.vao);
@@ -34,7 +38,11 @@ export abstract class BasicPrimitiveRenderer {
         gl.uniform4fv(this.colorULoc, color.data);
     }
 
-    abstract initializeBuffers(gl: WebGL2RenderingContext, positionAttributeLocation: number): void;
+    abstract initializeBuffers(gl: WebGL2RenderingContext,
+        positionAttributeLocation: number,
+        vertices?: Float32Array,
+        indices?: Uint16Array): void;
+        
     abstract renderBorder(gl: WebGL2RenderingContext): void;
     abstract renderFill(gl: WebGL2RenderingContext): void;
 }

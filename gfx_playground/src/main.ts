@@ -11,7 +11,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       </radiogroup>
       <div id="primdiv">
         <label for="primlabel">Primitives</label>
-        <input type="number" id="numPrimitives" name="numPrimitives" value="100">
+        <input type="number" id="numPrimitives" name="numPrimitives" value="1000">
       </div>
       <div id="options">
         <label for="instanced">Instanced</label>
@@ -19,7 +19,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <label for="sdf">SDF</label>
         <input type="checkbox" id="sdf" name="sdf" checked>
       </div>
-      <canvas id="canvas" width="800" height="600"></canvas>
+      <canvas id="canvas" width="1024" height="1024"></canvas>
     </div>
 `
 

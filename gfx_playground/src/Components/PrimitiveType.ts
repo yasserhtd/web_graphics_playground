@@ -3,5 +3,6 @@ export enum PrimitiveType {
     Rectangle,
     Triangle,
     Hexagon,
+    Geometry,
     END
 }
