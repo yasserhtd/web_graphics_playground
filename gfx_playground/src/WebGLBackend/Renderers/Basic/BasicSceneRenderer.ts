@@ -1,12 +1,12 @@
-import { Primitive } from "../../Components/Primitive";
-import { PrimitiveType } from "../../Components/PrimitiveType";
-import { Scene } from "../../Components/Scene";
-import { tringulateCircle } from "../../utils/Triangulator";
-import { BasicShader } from "../Shaders/BasicShader";
-import { BasicPrimitiveRenderer } from "./BasicPrimitivesRenderers/BasicPrimitiveRenderer";
-import { BasicRectangleRenderer } from "./BasicPrimitivesRenderers/BasicRectangleRenderer";
-import { BasicTriangleRenderer } from "./BasicPrimitivesRenderers/BasicTriangleRenderer";
-import { GeometryRenderer } from "./BasicPrimitivesRenderers/GeometryRenderer";
+import { Primitive } from "../../../Components/Primitive";
+import { PrimitiveType } from "../../../Components/PrimitiveType";
+import { Scene } from "../../../Components/Scene";
+import { tringulateCircle } from "../../../utils/Triangulator";
+import { BasicShader } from "../../Shaders/BasicShader";
+import { BasicPrimitiveRenderer } from "./BasicPrimitiveRenderer";
+import { BasicRectangleRenderer } from "./BasicRectangleRenderer";
+import { BasicTriangleRenderer } from "./BasicTriangleRenderer";
+import { GeometryRenderer } from "./GeometryRenderer";
 
 export class BasicSceneRenderer {
     scene: Scene;

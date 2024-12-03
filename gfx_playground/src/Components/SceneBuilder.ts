@@ -1,4 +1,4 @@
-import { BasicSceneRenderer } from "../WebGLBackend/Renderers/BasicSceneRenderer";
+import { BasicSceneRenderer } from "../WebGLBackend/Renderers/Basic/BasicSceneRenderer";
 import { generatePrimitives } from "./PrimitivesGenerator";
 import { Scene } from "./Scene";
 
@@ -12,19 +12,21 @@ export function buildScene(canvas: HTMLCanvasElement, backend: HTMLInputElement,
     const radioGroup = backend as HTMLDivElement;
     const selectedRadio = (radioGroup.querySelector('input[name="mode"]:checked') as HTMLInputElement).value;
 
-    initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
+    let renderer = initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
 
     numPrimitives.addEventListener('change', (e) => {
         const numPrimitives = (e.target as HTMLInputElement).valueAsNumber;
-        //scene.primitives = generatePrimitives(numPrimitives);
-        const scene = initializeScene(canvas, numPrimitives);
-        initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
+        scene.primitives = generatePrimitives(numPrimitives);
+        scene.dragger.primitives = scene.primitives;
+        renderer!.render();
+        //const scene = initializeScene(canvas, numPrimitives);
+        //initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
     })
 
     backend.addEventListener('change', (e) => {
         const selectedRadio = (e.target as HTMLInputElement).value;
         //TODO: destroy old backend
-        initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
+        renderer =initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
     });
 }
 
@@ -35,7 +37,7 @@ function initializeScene(canvas: HTMLCanvasElement, numPrimitives: number) {
 
 function initializeBackend (canvas: HTMLCanvasElement, backend: string, scene: any, instanced: boolean, useSDF: boolean) { 
     if(backend === 'webgl') {
-        initializeWebGL(canvas, scene, instanced, useSDF);
+        return initializeWebGL(canvas, scene, instanced, useSDF);
     } else if(backend === 'webgpu') {
         initializeWebGPU(canvas, scene, instanced, useSDF);
     }
@@ -45,6 +47,7 @@ function initializeWebGL(canvas: HTMLCanvasElement, scene: any, instanced: boole
     const gl = canvas.getContext('webgl2')!;
     const renderer = new BasicSceneRenderer(gl, scene);
     renderer.render();
+    return renderer;
 }
 
 function initializeWebGPU(canvas: HTMLCanvasElement, scene: any, instanced: boolean, useSDF: boolean) {

@@ -4,7 +4,7 @@ import { Primitive } from "./Primitive";
 
 export class Dragger {
 
-    private primitives: Primitive[];
+    primitives: Primitive[];
     protected dragIdx: number|null = null;
     private prevMousePos: vec2|null = null;
     private sceneChangedCallback: (changedIdx: number)=>void = () => {};
