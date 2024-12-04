@@ -6,9 +6,11 @@ export class Camera {
     minZoom: number = 0.05;
     maxZoom: number = 2;
     private sceneChangedCallback: (changedIdx: number)=>void = () => {};
+    canvas: HTMLCanvasElement;
 
     constructor(canvas: HTMLCanvasElement) {
-        canvas.addEventListener('wheel', this.wheel.bind(this));
+        this.canvas = canvas;
+        this.canvas.addEventListener('wheel', this.wheel.bind(this));
     }
     
     setSceneChangedCallback(callback: (changedIdx: number)=>void) {
@@ -31,5 +33,9 @@ export class Camera {
 
     screenToWorldSpace(pos: vec2) {
         return new vec2((pos.data[0] - this.position.data[0]) / this.zoom, (pos.data[1] - this.position.data[1]) / this.zoom);
+    }
+
+    cleanup() {
+        this.canvas.removeEventListener('wheel', this.wheel.bind(this));
     }
 }

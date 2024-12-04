@@ -86,4 +86,20 @@ export class InstGeomRenderer {
     }
     gl.drawElementsInstanced(gl.TRIANGLES, this.numIndices, gl.UNSIGNED_SHORT, 0, this.numInstances);
    }
+
+   cleanup(gl: WebGL2RenderingContext) {
+    gl.deleteVertexArray(this.vao);
+    gl.deleteBuffer(this.positionBuffer);
+    gl.deleteBuffer(this.transBuffer);
+    gl.deleteBuffer(this.scaleBuffer);
+    gl.deleteBuffer(this.colorBuffer);
+    gl.deleteBuffer(this.indexBuffer);
+
+    this.vao = null;
+    this.positionBuffer = null;
+    this.transBuffer = null;
+    this.scaleBuffer = null;
+    this.colorBuffer = null;
+    this.indexBuffer = null;
+   }
 }

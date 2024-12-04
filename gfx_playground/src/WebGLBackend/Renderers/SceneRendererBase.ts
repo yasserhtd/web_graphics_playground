@@ -25,4 +25,8 @@ export abstract class SceneRendererBase {
     }
     abstract sceneChanged(changedIdx: number): void;
     abstract renderScene(): void;
+
+    cleanup(): void {
+        this.scene.cleanup
+    }
 }

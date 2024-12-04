@@ -12,7 +12,9 @@ export class InstancedSceneRenderer extends SceneRendererBase {
         this.initializeRenderers();
      }
     sceneChanged(changedIdx: number): void {
-        this.rectRenderer.setTranslation(changedIdx, this.scene.primitives[changedIdx].position);
+        if(changedIdx !== -1) {
+            this.rectRenderer.setTranslation(changedIdx, this.scene.primitives[changedIdx].position);
+        }        
         super.render();
     }
     renderScene(): void {
@@ -53,5 +55,10 @@ export class InstancedSceneRenderer extends SceneRendererBase {
             scales,
             colors
         );
+    }
+
+    cleanup(): void {
+        super.cleanup();
+        this.rectRenderer.cleanup(this.gl);
     }
 }

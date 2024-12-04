@@ -13,4 +13,9 @@ export class Scene {
         this.camera = new Camera(canvas);
         this.dragger = new Dragger(this.primitives, canvas, this.camera);
     }
+
+    cleanup() {
+        this.camera.cleanup();
+        this.dragger.cleanup();
+    }
 }

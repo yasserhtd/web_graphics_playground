@@ -64,4 +64,10 @@ export class Dragger {
         this.dragIdx = null;
         this.prevMousePos = null;
     }
+
+    cleanup() {
+        this.canvas.removeEventListener('mousemove', this.onMouseMove.bind(this));
+        this.canvas.removeEventListener('mousedown', this.onMouseDown.bind(this));
+        this.canvas.removeEventListener('mouseup', this.onMouseUp.bind(this));
+    }
 }
