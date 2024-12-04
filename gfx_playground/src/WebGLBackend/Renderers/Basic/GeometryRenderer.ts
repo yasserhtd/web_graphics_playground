@@ -9,7 +9,10 @@ export class GeometryRenderer extends BasicPrimitiveRenderer {
     constructor(type: PrimitiveType) {
         super(type);
     }
-    initializeBuffers(gl: WebGL2RenderingContext, positionAttributeLocation: number, vertices: Float32Array, indices: Uint16Array): void {
+    initializeBuffers(gl: WebGL2RenderingContext,
+        positionAttributeLocation: number,
+        vertices: Float32Array,
+        indices: Uint16Array): void {
             this.numVertices = vertices.length / 2;
             this.numIndices = indices.length;
             this.vao = gl.createVertexArray();

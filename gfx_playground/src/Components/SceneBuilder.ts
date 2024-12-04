@@ -16,8 +16,7 @@ export function buildScene(canvas: HTMLCanvasElement, backend: HTMLInputElement,
 
     numPrimitives.addEventListener('change', (e) => {
         const numPrimitives = (e.target as HTMLInputElement).valueAsNumber;
-        scene.primitives = generatePrimitives(numPrimitives);
-        scene.dragger.primitives = scene.primitives;
+        scene.primitives.splice(0, scene.primitives.length, ...generatePrimitives(numPrimitives));
         renderer!.render();
         //const scene = initializeScene(canvas, numPrimitives);
         //initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
