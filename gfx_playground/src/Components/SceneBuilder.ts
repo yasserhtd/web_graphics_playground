@@ -18,11 +18,12 @@ export function buildScene(canvas: HTMLCanvasElement, backend: HTMLInputElement,
     numPrimitives.addEventListener('change', (e) => {
         const numPrimitives = (e.target as HTMLInputElement).valueAsNumber;
         //more optimal but doesn't work for instanced yet!
-        //scene.primitives.splice(0, scene.primitives.length, ...generatePrimitives(numPrimitives));
-        //renderer!.render();
-        renderer!.cleanup();
-        const scene = initializeScene(canvas, numPrimitives);
-        renderer = initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
+        scene.primitives.splice(0, scene.primitives.length, ...generatePrimitives(numPrimitives));
+        renderer!.render();
+        
+        //renderer!.cleanup();
+        //const scene = initializeScene(canvas, numPrimitives);
+        //renderer = initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
     })
 
     backend.addEventListener('change', (e) => {
@@ -47,7 +48,7 @@ function initializeBackend (canvas: HTMLCanvasElement, backend: string, scene: a
 
 function initializeWebGL(canvas: HTMLCanvasElement, scene: any, instanced: boolean, useSDF: boolean) {
     const gl = canvas.getContext('webgl2')!;
-    const renderer = new InstancedSceneRenderer(gl, scene);
+    const renderer = new BasicSceneRenderer(gl, scene);
     renderer.render();
     return renderer;
 }

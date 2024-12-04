@@ -6,20 +6,20 @@ import { PrimitiveType } from "./PrimitiveType";
 import { Triangle } from "./Triangle";
 import { Circle } from "./Circle";
 
-function createPrimitive(primitiveType: PrimitiveType, p: vec2, s: vec2, c: vec4) : Primitive {
+function createPrimitive(primitiveType: PrimitiveType, p: vec2, s: vec2, c: vec4, d: number) : Primitive {
     switch (primitiveType) {
         case PrimitiveType.Circle:
-            return new Circle(p, s, c);
+            return new Circle(p, s, c, d);
         case PrimitiveType.Rectangle:
-            return new Rectangle(p, s, c);
+            return new Rectangle(p, s, c, d);
         case PrimitiveType.Triangle:
-            return new Triangle(p, s, c);
+            return new Triangle(p, s, c, d);
         case PrimitiveType.Hexagon:
             break;
         default:
             break;
     }
-    return new Rectangle(p, s, c);
+    return new Rectangle(p, s, c, d);
 }
 
 /**
@@ -42,8 +42,8 @@ export function generatePrimitives(numInstances: number) : Primitive[] {
         const randomPos = new vec2(density*(rng() * 2 - 1), density*(rng() * 2 - 1));
         const randomScale = new vec2(rng() + 0.25, rng() + 0.25);
         const randomPrimitiveType:PrimitiveType = Math.floor(rng() * PrimitiveType.END);
-
-        const primitive = createPrimitive(randomPrimitiveType, randomPos, randomScale, randomColor);
+        const depth = i;
+        const primitive = createPrimitive(randomPrimitiveType, randomPos, randomScale, randomColor, depth);
         primitives.push(primitive);
     }
     return primitives;

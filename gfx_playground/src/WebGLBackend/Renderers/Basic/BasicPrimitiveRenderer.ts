@@ -8,6 +8,7 @@ export abstract class BasicPrimitiveRenderer {
     positionBuffer: WebGLBuffer | null = null;
     indexBuffer: WebGLBuffer | null = null;
 
+    depthULoc: WebGLUniformLocation|null = null;
     transULoc: WebGLUniformLocation|null = null;
     scaleULoc: WebGLUniformLocation|null = null;
     colorULoc: WebGLUniformLocation|null = null;
@@ -22,8 +23,10 @@ export abstract class BasicPrimitiveRenderer {
 
     setUniformsLocations(transULoc: WebGLUniformLocation|null,
         scaleULoc: WebGLUniformLocation|null,
-        colorULoc: WebGLUniformLocation|null): void {
+        colorULoc: WebGLUniformLocation|null,
+        depthULoc: WebGLUniformLocation|null): void {
 
+        this.depthULoc = depthULoc;
         this.transULoc = transULoc;
         this.scaleULoc = scaleULoc;
         this.colorULoc = colorULoc;
@@ -32,6 +35,10 @@ export abstract class BasicPrimitiveRenderer {
     setTransform(gl: WebGL2RenderingContext, position: vec2, scale: vec2): void {
         gl.uniform2fv(this.transULoc, position.data);
         gl.uniform2fv(this.scaleULoc, scale.data);
+    }
+
+    setDepth(gl: WebGL2RenderingContext, depth: number): void {
+        gl.uniform1f(this.depthULoc, depth);
     }
 
     setColor(gl: WebGL2RenderingContext,  color: vec4): void {

@@ -24,24 +24,24 @@ export class BasicSceneRenderer extends SceneRendererBase{
     }
 
     renderScene() {
-        this.scene.primitives.forEach(primitive => {
-            const renderer = this.bindRenderer(primitive);
-            
+        const numPrimitives = this.scene.primitives.length;
+        for (let i = 0; i < numPrimitives; i++) {
+            const primitive = this.scene.primitives[i];
+            const renderer = this.bindRenderer(primitive);            
             renderer.setTransform(this.gl, primitive.position, primitive.scale);
-
+            renderer.setDepth(this.gl, -primitive.depth/numPrimitives);
             renderer.setColor(this.gl, Primitive.borderColor);
             renderer.renderBorder(this.gl);
 
             renderer.setColor(this.gl, primitive.color);
             renderer.renderFill(this.gl);
-        });
+        }
     }
 
     private bindRenderer(primitive: Primitive) : BasicPrimitiveRenderer {
         if(this.lastBoundRenderer?.type == primitive.type) {
             return this.lastBoundRenderer;
         }
-
         switch (primitive.type) {
             case PrimitiveType.Rectangle:
                 this.lastBoundRenderer = BasicRectangleRenderer.Instance;
@@ -64,15 +64,15 @@ export class BasicSceneRenderer extends SceneRendererBase{
     initializeRenderers() {
         const shader = this.shader as BasicShader;
         //TODO: check if scene types and initialize only necessary buffers.
-        BasicRectangleRenderer.Instance.setUniformsLocations(shader.transULoc, shader.scaleULoc, shader.colorULoc);
-        BasicRectangleRenderer.Instance.initializeBuffers(this.gl, shader.positionAttributeLocation);
+        BasicRectangleRenderer.Instance.setUniformsLocations(shader.transULoc, shader.scaleULoc, shader.colorULoc, shader.depthULoc);
+        BasicRectangleRenderer.Instance.initializeBuffers(this.gl, shader.posAttribLoc);
 
-        BasicTriangleRenderer.Instance.setUniformsLocations(shader.transULoc, shader.scaleULoc, shader.colorULoc);
-        BasicTriangleRenderer.Instance.initializeBuffers(this.gl, shader.positionAttributeLocation);
+        BasicTriangleRenderer.Instance.setUniformsLocations(shader.transULoc, shader.scaleULoc, shader.colorULoc, shader.depthULoc);
+        BasicTriangleRenderer.Instance.initializeBuffers(this.gl, shader.posAttribLoc);
 
         const circle = tringulateCircle(10);
-        this.circleRenderer.setUniformsLocations(shader.transULoc, shader.scaleULoc, shader.colorULoc);
-        this.circleRenderer.initializeBuffers(this.gl, shader.positionAttributeLocation, circle[0], circle[1]);
+        this.circleRenderer.setUniformsLocations(shader.transULoc, shader.scaleULoc, shader.colorULoc, shader.depthULoc);
+        this.circleRenderer.initializeBuffers(this.gl, shader.posAttribLoc, circle[0], circle[1]);
         
     }
 }

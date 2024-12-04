@@ -5,13 +5,15 @@ export abstract class Primitive {
     position: vec2;
     scale: vec2;
     color: vec4;
+    depth: number;
     public static borderColor = new vec4(0.0, 0.0, 0.0, 1.0);
     type: PrimitiveType;
     
-    constructor(position: vec2, scale: vec2, color: vec4) {
+    constructor(position: vec2, scale: vec2, color: vec4, depth: number) {
         this.position = position;
         this.scale = scale;
         this.color = color;
+        this.depth = depth;
         this.type = PrimitiveType.END;
     }
 

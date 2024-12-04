@@ -3,8 +3,8 @@ import { Primitive } from "./Primitive";
 import { PrimitiveType } from "./PrimitiveType";
 
 export class Circle extends Primitive {
-    constructor(position: vec2, scale: vec2, color: vec4) {
-        super(position, scale, color);
+    constructor(position: vec2, scale: vec2, color: vec4, depth: number) {
+        super(position, scale, color, depth);
         this.type = PrimitiveType.Circle;
     }
 
