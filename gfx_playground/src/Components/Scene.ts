@@ -3,7 +3,7 @@ import { Dragger } from "./Dragger";
 import { Primitive } from "./Primitive";
 
 export class Scene {
-    primitives: Primitive[] = [];
+    primitives: Primitive[];
     camera: Camera;
     dragger: Dragger;
     canvas: HTMLCanvasElement;

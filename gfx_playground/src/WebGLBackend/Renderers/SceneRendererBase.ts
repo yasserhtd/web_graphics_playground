@@ -1,3 +1,4 @@
+import { PrimitiveType } from "../../Components/PrimitiveType";
 import { Scene } from "../../Components/Scene";
 import { ShaderBase } from "./ShaderBase";
 
@@ -10,7 +11,7 @@ export abstract class SceneRendererBase {
         this.scene = scene;
         this.shader = shader;
         this.scene.dragger.setSceneChangedCallback(this.sceneChanged.bind(this));
-        this.scene.camera.setSceneChangedCallback(this.sceneChanged.bind(this));
+        this.scene.camera.setCameraChangedCallback(this.cameraChanged.bind(this));
         this.gl.enable(this.gl.DEPTH_TEST);
     }
 
@@ -25,6 +26,9 @@ export abstract class SceneRendererBase {
         this.renderScene();
     }
     abstract sceneChanged(changedIdx: number): void;
+    cameraChanged(): void {
+        this.render();
+    }
     abstract renderScene(): void;
 
     cleanup(): void {

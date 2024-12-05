@@ -14,8 +14,6 @@ function createPrimitive(primitiveType: PrimitiveType, p: vec2, s: vec2, c: vec4
             return new Rectangle(p, s, c, d);
         case PrimitiveType.Triangle:
             return new Triangle(p, s, c, d);
-        case PrimitiveType.Hexagon:
-            break;
         default:
             break;
     }

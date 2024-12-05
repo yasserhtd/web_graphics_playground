@@ -1,9 +1,9 @@
 import Delaunator from 'delaunator';
 import { getCirclePoints } from './CirclePtsGen';
 
-export function tringulateCircle(lod: number) : [Float32Array, Uint16Array] {
+export function tringulateCircle(lod: number) {
     const points = getCirclePoints(lod);
     const delaunay = new Delaunator(points);
 
-    return [delaunay.coords, new Uint16Array(delaunay.triangles)];
+    return {vertices: delaunay.coords, indices: new Uint16Array(delaunay.triangles)};
 }

@@ -5,7 +5,7 @@ export class Camera {
     zoom: number = 1; //zoom level: from 0.1 to 10
     minZoom: number = 0.05;
     maxZoom: number = 2;
-    private sceneChangedCallback: (changedIdx: number)=>void = () => {};
+    private cameraChangedCallback: ()=>void = () => {};
     canvas: HTMLCanvasElement;
 
     constructor(canvas: HTMLCanvasElement) {
@@ -13,8 +13,8 @@ export class Camera {
         this.canvas.addEventListener('wheel', this.wheel.bind(this));
     }
     
-    setSceneChangedCallback(callback: (changedIdx: number)=>void) {
-        this.sceneChangedCallback = callback;
+    setCameraChangedCallback(callback: ()=>void) {
+        this.cameraChangedCallback = callback;
     }
 
     wheel(event: WheelEvent) {
@@ -23,12 +23,13 @@ export class Camera {
         //clamp zoom between minScale and maxScale
         this.zoom = Math.min(this.maxZoom, Math.max(this.minZoom, this.zoom + event.deltaY * deltaScale));
         if (prevZoom !== this.zoom) {
-            this.sceneChangedCallback(-1);
+            this.cameraChangedCallback();
         }            
     }
 
     moveCamera(pos: vec2) {
         this.position = pos;
+        this.cameraChangedCallback();
     }
 
     screenToWorldSpace(pos: vec2) {

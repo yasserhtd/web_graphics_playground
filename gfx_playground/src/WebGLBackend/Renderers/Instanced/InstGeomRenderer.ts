@@ -8,6 +8,7 @@ export class InstGeomRenderer {
     colorBuffer: WebGLBuffer | null = null;
     transBuffer: WebGLBuffer | null = null;
     scaleBuffer: WebGLBuffer | null = null;
+    depthsBuffer: WebGLBuffer | null = null;
     indexBuffer: WebGLBuffer | null = null;
 
     numVertices: number = 0;
@@ -31,11 +32,13 @@ export class InstGeomRenderer {
     transAttribLoc: number,
     scaleAttribLoc: number,
     colorAttribLoc: number,
+    depthAttribLoc: number,
     vertices: Float32Array,
     indices: Uint16Array,
     translations: Float32Array,
     scales: Float32Array,
-    colors: Float32Array) {
+    colors: Float32Array,
+    depths: Float32Array) {
     
     this.numVertices = vertices.length / 2;
     this.numIndices = indices.length;
@@ -71,6 +74,13 @@ export class InstGeomRenderer {
     gl.vertexAttribPointer(colorAttribLoc, 4, gl.FLOAT, false, 0, 0);
     gl.vertexAttribDivisor(colorAttribLoc, 1);
 
+    this.depthsBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.depthsBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, depths, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(depthAttribLoc);
+    gl.vertexAttribPointer(depthAttribLoc, 1, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribDivisor(depthAttribLoc, 1);
+
     this.indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
@@ -93,6 +103,7 @@ export class InstGeomRenderer {
     gl.deleteBuffer(this.transBuffer);
     gl.deleteBuffer(this.scaleBuffer);
     gl.deleteBuffer(this.colorBuffer);
+    gl.deleteBuffer(this.depthsBuffer);
     gl.deleteBuffer(this.indexBuffer);
 
     this.vao = null;
@@ -100,6 +111,7 @@ export class InstGeomRenderer {
     this.transBuffer = null;
     this.scaleBuffer = null;
     this.colorBuffer = null;
+    this.depthsBuffer = null;
     this.indexBuffer = null;
    }
 }

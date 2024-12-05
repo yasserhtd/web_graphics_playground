@@ -10,6 +10,7 @@ import { BasicTriangleRenderer } from "./BasicTriangleRenderer";
 import { GeometryRenderer } from "./GeometryRenderer";
 
 export class BasicSceneRenderer extends SceneRendererBase{
+
     private lastBoundRenderer: BasicPrimitiveRenderer | null = null;
     private circleRenderer: GeometryRenderer = new GeometryRenderer(PrimitiveType.Circle);
 
@@ -18,31 +19,28 @@ export class BasicSceneRenderer extends SceneRendererBase{
         this.initializeRenderers();
     }
 
-    sceneChanged(changedIdx: number) {
+    sceneChanged(_changedIdx: number) {
         // no need to update any buffers; just render
         this.render();
     }
-
     renderScene() {
-        const numPrimitives = this.scene.primitives.length;
-        for (let i = 0; i < numPrimitives; i++) {
-            const primitive = this.scene.primitives[i];
-            const renderer = this.bindRenderer(primitive);            
-            renderer.setTransform(this.gl, primitive.position, primitive.scale);
-            renderer.setDepth(this.gl, -primitive.depth/numPrimitives);
+        for (const p of this.scene.primitives) {
+            const renderer = this.bindRenderer(p.type);            
+            renderer.setTransform(this.gl, p.position, p.scale);
+            renderer.setDepth(this.gl, -p.depth/this.scene.primitives.length);
             renderer.setColor(this.gl, Primitive.borderColor);
             renderer.renderBorder(this.gl);
 
-            renderer.setColor(this.gl, primitive.color);
+            renderer.setColor(this.gl, p.color);
             renderer.renderFill(this.gl);
         }
     }
 
-    private bindRenderer(primitive: Primitive) : BasicPrimitiveRenderer {
-        if(this.lastBoundRenderer?.type == primitive.type) {
+    private bindRenderer(type: PrimitiveType) : BasicPrimitiveRenderer {
+        if(this.lastBoundRenderer?.type == type) {
             return this.lastBoundRenderer;
         }
-        switch (primitive.type) {
+        switch (type) {
             case PrimitiveType.Rectangle:
                 this.lastBoundRenderer = BasicRectangleRenderer.Instance;
                 break;
@@ -72,7 +70,7 @@ export class BasicSceneRenderer extends SceneRendererBase{
 
         const circle = tringulateCircle(10);
         this.circleRenderer.setUniformsLocations(shader.transULoc, shader.scaleULoc, shader.colorULoc, shader.depthULoc);
-        this.circleRenderer.initializeBuffers(this.gl, shader.posAttribLoc, circle[0], circle[1]);
+        this.circleRenderer.initializeBuffers(this.gl, shader.posAttribLoc, circle.vertices, circle.indices);
         
     }
 }
