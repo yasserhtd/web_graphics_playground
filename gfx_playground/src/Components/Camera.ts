@@ -8,9 +8,11 @@ export class Camera {
     private cameraChangedCallback: ()=>void = () => {};
     canvas: HTMLCanvasElement;
 
+    private wheelHandler = this.wheel.bind(this);
+
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
-        this.canvas.addEventListener('wheel', this.wheel.bind(this));
+        this.canvas.addEventListener('wheel', this.wheelHandler);
     }
     
     setCameraChangedCallback(callback: ()=>void) {
@@ -37,6 +39,6 @@ export class Camera {
     }
 
     cleanup() {
-        this.canvas.removeEventListener('wheel', this.wheel.bind(this));
+        this.canvas.removeEventListener('wheel', this.wheelHandler);
     }
 }

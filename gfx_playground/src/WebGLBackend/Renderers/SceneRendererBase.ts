@@ -32,6 +32,6 @@ export abstract class SceneRendererBase {
     abstract renderScene(): void;
 
     cleanup(): void {
-        this.scene.cleanup
+        this.scene.cleanup();
     }
 }

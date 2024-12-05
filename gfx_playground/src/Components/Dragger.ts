@@ -11,11 +11,16 @@ export class Dragger {
     private camera: Camera;
     private canvas: HTMLCanvasElement;
 
+    private mouseMoveHandler = this.onMouseMove.bind(this);
+    private mouseDownHandler= this.onMouseDown.bind(this);
+    private mouseUpHandler= this.onMouseUp.bind(this);
+
     constructor(primitives: Primitive[], canvas: HTMLCanvasElement, camera: Camera) {
         this.primitives = primitives;
-        canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
-        canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
-        canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
+
+        canvas.addEventListener('mousemove', this.mouseMoveHandler);
+        canvas.addEventListener('mousedown', this.mouseDownHandler);
+        canvas.addEventListener('mouseup', this.mouseUpHandler);
         this.camera = camera;
         this.canvas = canvas;
     }
@@ -66,8 +71,8 @@ export class Dragger {
     }
 
     cleanup() {
-        this.canvas.removeEventListener('mousemove', this.onMouseMove.bind(this));
-        this.canvas.removeEventListener('mousedown', this.onMouseDown.bind(this));
-        this.canvas.removeEventListener('mouseup', this.onMouseUp.bind(this));
+        this.canvas.removeEventListener('mousemove', this.mouseMoveHandler);
+        this.canvas.removeEventListener('mousedown', this.mouseDownHandler);
+        this.canvas.removeEventListener('mouseup', this.mouseUpHandler);
     }
 }
