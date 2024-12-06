@@ -1,7 +1,7 @@
 import { PrimitiveType } from "../../../Components/PrimitiveType";
 import { vec2, vec4 } from "../../../utils/math";
 
-export abstract class BasicPrimitiveRenderer {
+export abstract class BasicRendererBase {
 
     type: PrimitiveType;
     vao: WebGLVertexArrayObject | null = null;
@@ -47,6 +47,7 @@ export abstract class BasicPrimitiveRenderer {
 
     abstract initializeBuffers(gl: WebGL2RenderingContext,
         positionAttributeLocation: number,
+        texcoordAttribLoc?: number,
         vertices?: Float32Array,
         indices?: Uint16Array): void;
         

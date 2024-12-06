@@ -1,7 +1,7 @@
 import { PrimitiveType } from "../../../Components/PrimitiveType";
-import { BasicPrimitiveRenderer } from "./BasicPrimitiveRenderer";
+import { BasicRendererBase } from "./BasicRendererBase";
 
-export class GeometryRenderer extends BasicPrimitiveRenderer {
+export class GeometryRenderer extends BasicRendererBase {
 
     numVertices: number = 0;
     numIndices: number = 0;

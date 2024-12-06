@@ -1,13 +1,15 @@
 import { PrimitiveType } from "../../../Components/PrimitiveType";
 import { BasicRendererBase } from "./BasicRendererBase";
 
-export class BasicRectangleRenderer extends BasicRendererBase {
+export class BasicTextureRectRenderer extends BasicRendererBase {
+
+    texCoordBuffer: WebGLBuffer | null = null;
 
     constructor() {
         super(PrimitiveType.Rectangle);
     }
 
-    initializeBuffers(gl: WebGL2RenderingContext, positionAttributeLocation: number): void {
+    initializeBuffers(gl: WebGL2RenderingContext, posAttribLoc: number, texcoordAttribLoc: number): void {
             this.vao = gl.createVertexArray();
             gl.bindVertexArray(this.vao);
             this.positionBuffer = gl.createBuffer();
@@ -19,9 +21,21 @@ export class BasicRectangleRenderer extends BasicRendererBase {
                 1.0, 0.0
             ]), gl.STATIC_DRAW);
     
-            gl.enableVertexAttribArray(positionAttributeLocation);
-            gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
-            
+            gl.enableVertexAttribArray(posAttribLoc);
+            gl.vertexAttribPointer(posAttribLoc, 2, gl.FLOAT, false, 0, 0);
+    
+            this.texCoordBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.texCoordBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                0.0, 0.0,
+                0.0, 1.0,
+                1.0, 1.0,
+                1.0, 0.0
+            ]), gl.STATIC_DRAW);
+    
+            gl.enableVertexAttribArray(texcoordAttribLoc);
+            gl.vertexAttribPointer(texcoordAttribLoc, 2, gl.FLOAT, false, 0, 0);
+
             this.indexBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
             gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([
@@ -40,7 +54,7 @@ export class BasicRectangleRenderer extends BasicRendererBase {
         gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
     }
 
-    private static _instance: BasicRectangleRenderer;
+    private static _instance: BasicTextureRectRenderer;
     public static get Instance() : BasicRendererBase {
         return this._instance || (this._instance = new this());
 

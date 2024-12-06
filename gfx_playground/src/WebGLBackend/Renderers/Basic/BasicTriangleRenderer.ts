@@ -1,7 +1,7 @@
 import { PrimitiveType } from "../../../Components/PrimitiveType";
-import { BasicPrimitiveRenderer } from "./BasicPrimitiveRenderer";
+import { BasicRendererBase } from "./BasicRendererBase";
 
-export class BasicTriangleRenderer extends BasicPrimitiveRenderer {
+export class BasicTriangleRenderer extends BasicRendererBase {
 
     constructor() {
         super(PrimitiveType.Triangle);
@@ -33,7 +33,7 @@ export class BasicTriangleRenderer extends BasicPrimitiveRenderer {
     }
 
     private static _instance: BasicTriangleRenderer;
-    public static get Instance() : BasicPrimitiveRenderer {
+    public static get Instance() : BasicRendererBase {
         return this._instance || (this._instance = new this());
 
     }

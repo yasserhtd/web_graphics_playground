@@ -4,14 +4,14 @@ import { Scene } from "../../../Components/Scene";
 import { tringulateCircle } from "../../../utils/Triangulator";
 import { BasicShader } from "./BasicShader";
 import { SceneRendererBase } from "../SceneRendererBase";
-import { BasicPrimitiveRenderer } from "./BasicPrimitiveRenderer";
+import { BasicRendererBase } from "./BasicRendererBase";
 import { BasicRectangleRenderer } from "./BasicRectangleRenderer";
 import { BasicTriangleRenderer } from "./BasicTriangleRenderer";
 import { GeometryRenderer } from "./GeometryRenderer";
 
 export class BasicSceneRenderer extends SceneRendererBase{
 
-    private lastBoundRenderer: BasicPrimitiveRenderer | null = null;
+    private lastBoundRenderer: BasicRendererBase | null = null;
     private circleRenderer: GeometryRenderer = new GeometryRenderer(PrimitiveType.Circle);
 
     constructor(gl: WebGL2RenderingContext, scene: Scene) {
@@ -36,7 +36,7 @@ export class BasicSceneRenderer extends SceneRendererBase{
         }
     }
 
-    private bindRenderer(type: PrimitiveType) : BasicPrimitiveRenderer {
+    private bindRenderer(type: PrimitiveType) : BasicRendererBase {
         if(this.lastBoundRenderer?.type == type) {
             return this.lastBoundRenderer;
         }
