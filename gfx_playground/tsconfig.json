@@ -13,6 +13,7 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "typeRoots": ["node_modules/@webgpu/types"],
 
     /* Linting */
     "strict": true,

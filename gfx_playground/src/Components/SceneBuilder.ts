@@ -1,5 +1,6 @@
 import { BasicSceneRenderer } from "../WebGLBackend/Renderers/Basic/BasicSceneRenderer";
 import { InstancedSceneRenderer } from "../WebGLBackend/Renderers/Instanced/InstancedSceneRenderer";
+import { WebGPUTriangleRenderer } from "../WebGPUBackend/WebGPUBackend";
 import { generatePrimitives } from "./PrimitivesGenerator";
 import { Scene } from "./Scene";
 
@@ -29,7 +30,7 @@ export function buildScene(canvas: HTMLCanvasElement, backend: HTMLInputElement,
     backend.addEventListener('change', (e) => {
         const selectedRadio = (e.target as HTMLInputElement).value;
         //TODO: destroy old backend
-        renderer =initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
+        renderer = initializeBackend(canvas, selectedRadio, scene, instanced.checked, useSDF.checked);
     });
 }
 
@@ -56,5 +57,6 @@ function initializeWebGL(canvas: HTMLCanvasElement, scene: any, instanced: boole
 
 function initializeWebGPU(canvas: HTMLCanvasElement, scene: any, instanced: boolean, useSDF: boolean) {
    // const ctx = canvas.getContext('webgpu')!
-    
+   const renderer = new WebGPUTriangleRenderer(canvas);
+   renderer.initialize().then(() => renderer.render());
 }

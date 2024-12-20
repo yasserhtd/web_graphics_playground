@@ -6,8 +6,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <div class="card">
       <button id="counter" type="button"></button>
       <radiogroup id="backend"> 
-        <input type="radio" name="mode" value="webgl" checked> WebGL
-        <input type="radio" name="mode" value="webgpu"> WebGPU
+        <input type="radio" name="mode" value="webgl"> WebGL
+        <input type="radio" name="mode" value="webgpu" checked> WebGPU
       </radiogroup>
       <div id="primdiv">
         <label for="primlabel">Primitives</label>
